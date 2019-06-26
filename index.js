@@ -1,3 +1,5 @@
+"use strict";
+
 var stream = require('stream');
 
 const JSONStream = function(options) {
@@ -52,9 +54,9 @@ if (require.main === module) {
   /* Basic test from STDIN */
   let transform = x => x;
   if (process.argv[2]) {
-    x = new Function("_","return ("+process.argv[2]+")");
+    transform = new Function("$","return ("+process.argv[2]+")");
   }
   var s = new JSONStream() ;
-  s.on('data', object => console.log(x(object)));
+  s.on('data', object => console.log(transform(object)));
   process.stdin.pipe(s);
 }
